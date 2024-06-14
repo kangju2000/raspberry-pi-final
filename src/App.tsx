@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { css } from '@emotion/react';
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return <div css={testCss}>Hello world!</div>;
 }
 
 export default App;
+
+const testCss = css({
+  color: 'red',
+  fontSize: 20,
+});
