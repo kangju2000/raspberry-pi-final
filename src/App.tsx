@@ -94,7 +94,7 @@ export default function App() {
             whileTap={{ scale: 0.95 }}
             css={switchBoxCss}
             onClick={() => {
-              const onOff = bulb ? 'on' : 'off';
+              const onOff = bulb ? 'off' : 'on';
               setBulb(!bulb);
               setOpenToast({ open: false, title: '', description: '' });
               window.clearTimeout(timerRef.current);
@@ -126,7 +126,7 @@ export default function App() {
             whileTap={{ scale: 0.95 }}
             css={switchBoxCss}
             onClick={() => {
-              const onOff = fan ? 'on' : 'off';
+              const onOff = fan ? 'off' : 'on';
               setFan(!fan);
               setOpenToast({ open: false, title: '', description: '' });
               window.clearTimeout(timerRef.current);
