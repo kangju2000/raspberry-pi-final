@@ -1,15 +1,46 @@
 import { css } from '@emotion/react';
+
 import { Flex, Tabs } from '@radix-ui/themes';
 import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { AreaChart, AreaChartData } from './components/AreaChart';
+import { Toast } from './components/Toast';
 import { generateRandomWeatherData } from './utils/generateRandomWeatherData';
+
+const fanText = {
+  on: {
+    title: '선풍기 작동',
+    description: '선풍기가 작동되었습니다.',
+  },
+  off: {
+    title: '선풍기 중지',
+    description: '선풍기가 중지되었습니다.',
+  },
+};
+
+const bulbText = {
+  on: {
+    title: '조명 켜기',
+    description: '조명이 켜졌습니다.',
+  },
+  off: {
+    title: '조명 끄기',
+    description: '조명이 꺼졌습니다.',
+  },
+};
 
 export default function App() {
   const [data, setData] = useState<{ temperature: AreaChartData; humidity: AreaChartData }>({
     temperature: [{ x: Date.now(), y: 0 }],
     humidity: [{ x: Date.now(), y: 0 }],
   });
+
+  const [fan, setFan] = useState(false);
+  const [bulb, setBulb] = useState(false);
+  const timerRef = useRef(0);
+
+  const [openToast, setOpenToast] = useState({ open: false, title: '', description: '' });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,7 +58,7 @@ export default function App() {
 
   return (
     <div css={containerCss}>
-      <Flex justify="center" align="center" width="100%" height="100%">
+      <Flex direction="column" justify="center" align="center" width="100%" height="100%" gap="6">
         <div css={boxContainerCss}>
           <div css={boxCss}>
             <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,7 +88,74 @@ export default function App() {
             <strong>{data.humidity[data.humidity.length - 1]?.y}%</strong>
           </div>
         </div>
+
+        <Flex justify="center" align="center" width="100%" height="100px" gap="3">
+          <motion.div
+            whileTap={{ scale: 0.95 }}
+            css={switchBoxCss}
+            onClick={() => {
+              const onOff = bulb ? 'on' : 'off';
+              setBulb(!bulb);
+              setOpenToast({ open: false, title: '', description: '' });
+              window.clearTimeout(timerRef.current);
+
+              timerRef.current = window.setTimeout(() => {
+                setOpenToast({
+                  open: true,
+                  title: bulbText[onOff].title,
+                  description: bulbText[onOff].description,
+                });
+              }, 100);
+            }}
+          >
+            <svg width="48" height="48" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d={
+                  bulb
+                    ? 'M4.5 9H7.5M5 10.5H7M4.5 7.5C4.5005 6.5 4.2505 6.25 3.75 5.75C3.2495 5.25 3.0125 4.7435 3 4C2.9765 2.475 4 1.5 6 1.5C8.0005 1.5 9.0245 2.475 9 4C8.9885 4.7435 8.75 5.25 8.25 5.75C7.7505 6.25 7.5005 6.5 7.5 7.5'
+                    : 'M4.5 9H7.5M5 10.5H7M8.25 5.75C8.75 5.25 8.9885 4.7435 9 4C9.024 2.475 8 1.5 6 1.5C5.416 1.5 4.9155 1.583 4.5 1.7385M4.5 7.5C4.5 6.5 4.25 6.25 3.75 5.75C3.25 5.25 3.0115 4.7435 3 4C2.99403 3.74735 3.02228 3.49506 3.084 3.25M1.5 1.5L10.5 10.5'
+                }
+                stroke="#525463"
+                stroke-width="0.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </motion.div>
+          <motion.div
+            whileTap={{ scale: 0.95 }}
+            css={switchBoxCss}
+            onClick={() => {
+              const onOff = fan ? 'on' : 'off';
+              setFan(!fan);
+              setOpenToast({ open: false, title: '', description: '' });
+              window.clearTimeout(timerRef.current);
+              window.setTimeout(() => {
+                setOpenToast({
+                  open: true,
+                  title: fanText[onOff].title,
+                  description: fanText[onOff].description,
+                });
+              }, 100);
+            }}
+          >
+            <svg width="48" height="48" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d={
+                  fan
+                    ? 'M6 5.5C5.86739 5.5 5.74021 5.55268 5.64645 5.64645C5.55268 5.74021 5.5 5.86739 5.5 6C5.5 6.13261 5.55268 6.25979 5.64645 6.35355C5.74021 6.44732 5.86739 6.5 6 6.5C6.13261 6.5 6.25979 6.44732 6.35355 6.35355C6.44732 6.25979 6.5 6.13261 6.5 6C6.5 5.86739 6.44732 5.74021 6.35355 5.64645C6.25979 5.55268 6.13261 5.5 6 5.5ZM6.25 1C8.5 1 8.555 2.785 7.375 3.375C6.88 3.62 6.66 4.145 6.565 4.61C6.805 4.71 7.015 4.865 7.175 5.065C9.025 4.065 11.015 4.46 11.015 6.25C11.015 8.5 9.23 8.55 8.64 7.365C8.39 6.87 7.86 6.65 7.395 6.555C7.295 6.795 7.14 7 6.94 7.17C7.935 9.015 7.54 11 5.75 11C3.5 11 3.455 9.21 4.635 8.62C5.125 8.375 5.345 7.855 5.445 7.395C5.2 7.295 4.985 7.135 4.825 6.935C2.98 7.925 1 7.535 1 5.75C1 3.5 2.78 3.445 3.37 4.63C3.62 5.125 4.145 5.34 4.61 5.435C4.705 5.195 4.865 4.985 5.07 4.825C4.075 2.98 4.47 1 6.25 1Z'
+                    : 'M6.25 1C4.82 1 4.285 2.275 4.645 3.735L7.5 6.58C7.935 6.685 8.405 6.905 8.64 7.365C9.23 8.55 11.015 8.5 11.015 6.25C11.015 4.46 9.025 4.065 7.175 5.065C7.015 4.865 6.805 4.71 6.565 4.61C6.66 4.145 6.88 3.62 7.375 3.375C8.555 2.785 8.5 1 6.25 1ZM1.64 2L1 2.635L2.235 3.865C1.61 3.87 1 4.435 1 5.75C1 7.535 2.98 7.925 4.825 6.935C4.985 7.135 5.2 7.295 5.445 7.395C5.345 7.855 5.125 8.375 4.635 8.62C3.455 9.21 3.5 11 5.75 11C6.9 11 7.47 10.18 7.47 9.105L9.365 11L10 10.36L1.64 2Z'
+                }
+                stroke="#525463"
+                stroke-width="0.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </motion.div>
+        </Flex>
       </Flex>
+
       <Tabs.Root css={tabsRootCss} defaultValue="temperature">
         <Tabs.List css={tabsListCss}>
           <Tabs.Trigger css={tabsTriggerCss} value="temperature">
@@ -106,6 +204,13 @@ export default function App() {
           />
         </Tabs.Content>
       </Tabs.Root>
+
+      <Toast
+        {...openToast}
+        onOpenChange={open => {
+          setOpenToast({ ...openToast, open });
+        }}
+      />
     </div>
   );
 }
@@ -164,6 +269,18 @@ const boxCss = css({
   alignItems: 'center',
   justifyContent: 'center',
   border: '1px solid #e0e0e0',
+});
+
+const switchBoxCss = css({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100px',
+  height: '100px',
+  aspectRatio: '1 / 1',
+  borderRadius: 20,
+  margin: '20px 0',
+  backgroundColor: 'var(--gray-4)',
 });
 
 const tabsRootCss = css({

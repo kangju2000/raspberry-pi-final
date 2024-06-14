@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+import * as Toast from '@radix-ui/react-toast';
 import { Box } from '@radix-ui/themes';
 import { PropsWithChildren } from 'react';
 
@@ -13,10 +15,30 @@ function Layout({ children }: PropsWithChildren) {
         mx="auto"
         style={{ backgroundColor: 'white' }}
       >
-        {children}
+        <Toast.Provider>
+          {children}
+          <Toast.Viewport css={toastViewportCss} />
+        </Toast.Provider>
       </Box>
     </Box>
   );
 }
 
 export default Layout;
+
+const toastViewportCss = css({
+  '--viewport-padding': '25px',
+  position: 'fixed',
+  bottom: 0,
+  right: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  padding: 'var(--viewport-padding)',
+  gap: 10,
+  width: 390,
+  maxWidth: '100vw',
+  margin: 0,
+  listStyle: 'none',
+  zIndex: 2147483647,
+  outline: 'none',
+});
