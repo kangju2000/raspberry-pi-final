@@ -38,8 +38,6 @@ type Props = {
 export function AreaChart({ data, tooltipCallbacks, onRefresh }: Props) {
   return (
     <Line
-      height={null}
-      width={null}
       data={{
         datasets: [
           {

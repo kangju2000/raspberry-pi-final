@@ -116,9 +116,9 @@ export default function App() {
                     : 'M4.5 9H7.5M5 10.5H7M8.25 5.75C8.75 5.25 8.9885 4.7435 9 4C9.024 2.475 8 1.5 6 1.5C5.416 1.5 4.9155 1.583 4.5 1.7385M4.5 7.5C4.5 6.5 4.25 6.25 3.75 5.75C3.25 5.25 3.0115 4.7435 3 4C2.99403 3.74735 3.02228 3.49506 3.084 3.25M1.5 1.5L10.5 10.5'
                 }
                 stroke="#525463"
-                stroke-width="0.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="0.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </motion.div>
@@ -147,9 +147,9 @@ export default function App() {
                     : 'M6.25 1C4.82 1 4.285 2.275 4.645 3.735L7.5 6.58C7.935 6.685 8.405 6.905 8.64 7.365C9.23 8.55 11.015 8.5 11.015 6.25C11.015 4.46 9.025 4.065 7.175 5.065C7.015 4.865 6.805 4.71 6.565 4.61C6.66 4.145 6.88 3.62 7.375 3.375C8.555 2.785 8.5 1 6.25 1ZM1.64 2L1 2.635L2.235 3.865C1.61 3.87 1 4.435 1 5.75C1 7.535 2.98 7.925 4.825 6.935C4.985 7.135 5.2 7.295 5.445 7.395C5.345 7.855 5.125 8.375 4.635 8.62C3.455 9.21 3.5 11 5.75 11C6.9 11 7.47 10.18 7.47 9.105L9.365 11L10 10.36L1.64 2Z'
                 }
                 stroke="#525463"
-                stroke-width="0.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="0.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </motion.div>
@@ -287,7 +287,6 @@ const tabsRootCss = css({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
-  height: '400px',
 });
 
 const tabsListCss = css({
@@ -322,4 +321,5 @@ const tabsContentCss = css({
   padding: 20,
   backgroundColor: 'white',
   outline: 'none',
+  minHeight: 250,
 });
