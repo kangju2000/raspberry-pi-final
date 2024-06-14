@@ -44,7 +44,6 @@ export function AreaChart({ data, tooltipCallbacks, onRefresh }: Props) {
         datasets: [
           {
             backgroundColor: 'rgba(54, 162, 235, 0.5)',
-            borderColor: 'rgb(54, 162, 235)',
             cubicInterpolationMode: 'monotone',
             type: 'line',
             data: data || [],
@@ -53,6 +52,7 @@ export function AreaChart({ data, tooltipCallbacks, onRefresh }: Props) {
         ],
       }}
       options={{
+        animation: false,
         aspectRatio: 1,
         maintainAspectRatio: false,
         spanGaps: true,
