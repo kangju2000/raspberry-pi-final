@@ -4,6 +4,17 @@ export function GlobalStyles() {
   return (
     <Global
       styles={css`
+        @font-face {
+          font-family: 'Pretendard Variable';
+          src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+        }
+
+        .radix-themes {
+          --default-font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+            'Noto Color Emoji';
+        }
+
         * {
           box-sizing: border-box;
           margin: 0;
